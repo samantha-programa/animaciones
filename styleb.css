@@ -1,0 +1,275 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #333; /* Gris oscuro opaco */
+    color: #CCC; /* Blanco-gris opaco */
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden; /* Para evitar scroll */
+    position: relative; /* Necesario para posicionar pantallas */
+    opacity: 0; /* Empieza invisible para la animación de carga */
+    transition: opacity 1s ease-in-out; /* Transición de opacidad al cargar */
+}
+
+/* Contenedores de pantalla */
+.main-screen, .second-screen {
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transition: transform 0.8s ease-in-out, opacity 0.8s ease-in-out;
+}
+
+.hidden {
+    display: none; /* Se usará JS para añadir/quitar esta clase */
+}
+
+.slide-out-left {
+    transform: translateX(-100%);
+    opacity: 0;
+}
+
+.slide-in-right {
+    transform: translateX(0);
+    opacity: 1;
+}
+
+.container {
+    background-color: #222; /* Negro opaco */
+    padding: 30px 50px;
+    border: 2px solid #555; /* Borde gris opaco */
+    box-shadow: 5px 5px 15px rgba(0,0,0,0.5);
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    max-width: 800px;
+    width: 90%;
+}
+
+.second-container {
+    border-style: dashed; /* Bordes punteados para un toque más "retro" */
+    border-color: #FFD700;
+    background-color: #1A1A1A; /* Un negro aún más profundo */
+    padding-top: 50px; /* Más espacio arriba para el título */
+}
+
+h1 {
+    color: #FFD700; /* Amarillo opaco */
+    font-size: 2.5em;
+    text-shadow: 2px 2px #000;
+    margin-bottom: 20px;
+}
+
+h2 {
+    color: #FFD700;
+    font-size: 2em;
+    margin-bottom: 30px;
+    text-shadow: 1px 1px #000;
+}
+
+p {
+    font-size: 1.1em;
+    line-height: 1.6;
+    margin-bottom: 30px;
+}
+
+button {
+    background-color: #666;
+    color: #FFF;
+    border: 1px solid #AAA;
+    padding: 10px 20px;
+    font-size: 1.2em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.1s ease;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.3);
+}
+
+button:hover {
+    background-color: #888;
+    transform: translateY(-2px); /* Pequeño efecto al pasar el ratón */
+}
+
+.back-button {
+    background-color: #8B0000; /* Un rojo oscuro para el botón de volver */
+    border-color: #CD5C5C;
+    margin-top: 40px;
+}
+.back-button:hover {
+    background-color: #A52A2A;
+}
+
+/* --- Animaciones CSS existentes (Glitch y Barra de carga) --- */
+
+.glitch {
+    position: relative;
+}
+
+.glitch::before,
+.glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+}
+
+.glitch::before {
+    left: 2px;
+    text-shadow: -2px 0 #f19bf1;
+    animation: glitch-anim-1 2s infinite linear alternate-reverse;
+}
+
+.glitch::after {
+    left: -2px;
+    text-shadow: 2px 0 #8dfdfd;
+    animation: glitch-anim-2 2s infinite linear alternate-reverse;
+}
+
+@keyframes glitch-anim-1 {
+    0% { clip-path: inset(10% 0 80% 0); opacity: 0.8; }
+    20% { clip-path: inset(50% 0 30% 0); opacity: 0.7; }
+    40% { clip-path: inset(10% 0 80% 0); opacity: 0.9; }
+    60% { clip-path: inset(70% 0 10% 0); opacity: 0.6; }
+    80% { clip-path: inset(20% 0 70% 0); opacity: 0.8; }
+    100% { clip-path: inset(0% 0 90% 0); opacity: 1; }
+}
+
+@keyframes glitch-anim-2 {
+    0% { clip-path: inset(80% 0 10% 0); opacity: 0.7; }
+    20% { clip-path: inset(30% 0 50% 0); opacity: 0.8; }
+    40% { clip-path: inset(80% 0 10% 0); opacity: 0.6; }
+    60% { clip-path: inset(10% 0 70% 0); opacity: 0.9; }
+    80% { clip-path: inset(70% 0 20% 0); opacity: 0.7; }
+    100% { clip-path: inset(90% 0 0% 0); opacity: 1; }
+}
+
+.loading-bar {
+    width: 0%;
+    height: 10px;
+    background-color: #FFD700;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transition: width 0.5s ease-out;
+}
+
+/* --- Animaciones CSS Nuevas --- */
+
+/* Menú de categorías */
+.menu-2000 {
+    display: flex;
+    flex-direction: column; /* Elementos apilados verticalmente */
+    gap: 15px; /* Espacio entre los elementos */
+    margin-bottom: 40px;
+    align-items: center;
+}
+
+.menu-item {
+    background-color: #444; /* Gris oscuro para los items */
+    color: #FFF;
+    text-decoration: none;
+    padding: 12px 25px;
+    border: 1px solid #777;
+    font-size: 1.3em;
+    width: 70%; /* Ancho para que parezcan botones */
+    max-width: 300px;
+    box-shadow: 3px 3px 8px rgba(0,0,0,0.4);
+    transition: background-color 0.3s ease, transform 0.1s ease, box-shadow 0.3s ease;
+    position: relative; /* Para el efecto data-text */
+    overflow: hidden; /* Esconde el overflow del pseudo-elemento */
+}
+
+.menu-item:hover {
+    background-color: #666;
+    transform: translateY(-3px);
+    box-shadow: 5px 5px 12px rgba(0,0,0,0.6);
+}
+
+/* Efecto "pop" en los items del menú (cuando se pasa el ratón) */
+.menu-item::before {
+    content: attr(data-text);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) scale(0);
+    color: #FFD700; /* Amarillo */
+    font-size: 1.5em;
+    font-weight: bold;
+    opacity: 0;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+    z-index: 1;
+}
+
+.menu-item:hover::before {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+}
+
+/* Animación de entrada para la segunda pantalla */
+.slide-in {
+    animation: slideInFromLeft 0.8s ease-out forwards;
+}
+
+@keyframes slideInFromLeft {
+    from {
+        transform: translateX(-100%);
+        opacity: 0;
+    }
+    to {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.fade-in {
+    animation: fadeIn 1.2s ease-in forwards;
+    animation-delay: 0.5s; /* Aparece después de otros elementos */
+    opacity: 0; /* Asegura que empieza invisible */
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+/* Efecto de ruido/CRT para el fondo */
+.noise-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAIAAAACCAYAAABytg0gAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyFpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDYuMC1jMDAyIDc5LjE2NDQ3OCwgMjAyMC8wNS8yMC0xMDowMjoyMyAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgxmlnsOnhtcE1NPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvbW0vIiB4bWxuczpzdFJlZj0iaHR0cDovL25zLmadobeS5jb20vcmFmLzEuMC8xLjAvIiB4bWxuczp4bXA9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC8iIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIDIxLjIgKFdpbmRvd3MpIiB4bXBNTTpEZXJpdmVkRnJvbT0ic3RSZWY6aW5zdGFuY2VJRDp4bXAuaWlkOjc5M0MyRTVFMzdBQjExRUJBRkRBRUUwRjk0MDIwODFFIiB4bXBNTTpJbnN0YW5jZUlEPnhtcC5paWQ6MTQ4MjI2MjgzQjFCMTFFQkFDQTRBNjUwQjQ2MTM4MjYiIHhtcDpDcmVhdGVEYXRlPSIyMDIwLTA2LTAzVDE4OjIyOjI4LTA1OjAwIiB4bXA6TW9kaWZ5RGF0ZT0iMjAyMC0wNi0wM1QxODoyNDoyOS0wNTowMCI+IDx4bXBNTTpIaXN0b3J5PjxyZGY6U2VxPiA8cmRmOmxpIHN0UmVmOmluc3RhbmNlSUQ9InhtcC5paWQ6NzkzQzJFNUUzN0FCMTFFQkFGRUFFMDlGOTQwMjA4MUEiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6NzkzQzJFNTQzN0FCMTFFQkFGRUFFMDlGOTQwMjA4MUEiLz4gPHJkZjpsaSBzdFJlZjppbnN0YW5jZUlEPnhtcC5paWQ6MTQ4MjI2MjgzQjFCMTFFQkFDQTRBNjUwQjQ2MTM4MjYiIHN0UmVmOmRvY3VtZW50SUQ9InhtcC5kaWQ6NzkzQzJFNTQzN0FCMTFFQkFGRUFFMDlGOTQwMjA4MUEiLz4gPC9yZGY6U2VxPjwvZmJvbjpIaXN0b3J5PjwvcmRmOkRlc2NyaXB0aW9uPiA8L3JkZjpSREY+IDwvc3Rla2V0PiC49+iRAAAAFElEQVR42mJgYGDgYmBgYGDjYAAAQOACuB4J9wAAAABJRU5ErkJggg=='); /* Pequeña imagen de ruido */
+    background-repeat: repeat;
+    pointer-events: none; /* Permite que el ratón interactúe con los elementos debajo */
+    opacity: 0.05; /* Muy sutil */
+    z-index: 100; /* Asegura que esté por encima de todo */
+    animation: grain 1s steps(10) infinite; /* Animación de ruido */
+}
+
+@keyframes grain {
+    0%, 100% { transform: translate(0, 0); }
+    10% { transform: translate(-5%, -10%); }
+    20% { transform: translate(-15%, 10%); }
+    30% { transform: translate(7%, -8%); }
+    40% { transform: translate(-10%, 12%); }
+    50% { transform: translate(-20%, -5%); }
+    60% { transform: translate(12%, 15%); }
+    70% { transform: translate(5%, -10%); }
+    80% { transform: translate(-18%, 8%); }
+    90% { transform: translate(10%, -12%); }
+}
+
+/* Transición para ocultar/mostrar elementos */
+.animated-hide {
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.5s ease-out;
+}
